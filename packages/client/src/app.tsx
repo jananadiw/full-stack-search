@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { getCodeSandboxHost } from "@codesandbox/utils";
 
 type Hotel = { _id: string, chain_name: string; hotel_name: string; city: string, country: string };
@@ -21,18 +21,23 @@ const fetchAndFilterHotels = async (value: string) => {
 function App() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [showClearBtn, setShowClearBtn] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchData = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '') {
-      setHotels([]);
-      setShowClearBtn(false);
-      return;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchTerm === '') {
+        setHotels([]);
+        setShowClearBtn(false);
+        return;
+      }
 
-    const filteredHotels = await fetchAndFilterHotels(event.target.value)
-    setShowClearBtn(true);
-    setHotels(filteredHotels);
-  };
+      const filteredHotels = await fetchAndFilterHotels(searchTerm)
+      setShowClearBtn(true);
+      setHotels(filteredHotels);
+    };
+
+    fetchData();
+  }, [searchTerm])
 
   return (
     <div className="App">
@@ -46,10 +51,17 @@ function App() {
                   type="text"
                   className="form-control form-input"
                   placeholder="Search accommodation..."
-                  onChange={fetchData}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
                 />
                 {showClearBtn && (
-                  <span className="left-pan">
+                  <span className="left-pan"
+                    onClick={()=> {
+                      setHotels([]);
+                      setShowClearBtn(false);
+                      setSearchTerm('');
+                    }}>
+
                     <i className="fa fa-close"></i>
                   </span>
                 )}
