@@ -18,7 +18,7 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 
-app.get('/hotels', async (req, res) => {
+app.get('/accommodation-data', async (req, res) => {
   const mongoClient = new MongoClient(DATABASE_URL);
   console.log('Connecting to MongoDB...');
 
@@ -26,12 +26,17 @@ app.get('/hotels', async (req, res) => {
     await mongoClient.connect();
     console.log('Successfully connected to MongoDB!');
     const db = mongoClient.db()
-    const collection = db.collection('hotels');
-    res.send(await collection.find().toArray())
+
+    const [hotels, countries, cities] = await Promise.all([
+      db.collection('hotels').find().toArray(),
+      db.collection('countries').find().toArray(),
+      db.collection('cities').find().toArray()
+    ]);
+    res.send({ hotels, countries, cities });
   } finally {
     await mongoClient.close();
   }
-})
+});
 
 app.listen(PORT, () => {
   console.log(`API Server Started at ${PORT}`)
