@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getCodeSandboxHost } from "@codesandbox/utils";
+import { useNavigate } from 'react-router-dom';
 
 type Hotel = { _id: string, chain_name: string; hotel_name: string; city: string, country: string };
 
@@ -18,10 +19,14 @@ const fetchAndFilterHotels = async (value: string) => {
   );
 }
 
+
 function App() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [showClearBtn, setShowClearBtn] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const navigate = useNavigate();
+  const handleClickHotel = (id: string) => navigate(`hotel/${id}`)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +76,7 @@ function App() {
                   <h2>Hotels</h2>
                   {hotels.length ? hotels.map((hotel, index) => (
                     <li key={index}>
-                      <a href={`/hotels/${hotel._id}`} className="dropdown-item">
+                      <a onClick={() => handleClickHotel(hotel._id)} className="dropdown-item">
                         <i className="fa fa-building mr-2"></i>
                         {hotel.hotel_name}
                       </a>
