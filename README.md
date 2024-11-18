@@ -80,17 +80,19 @@ When clicking on one of the `Hotels`, `Cities` or `Countries` links, the applica
 
 ### Limitations
 
-Given the time constraints, we do not expect a fully production-ready solution. We're primarily interested in the approach and the overall quality of the solution. 
-Feel free to modify the current codebase as needed, including adding or removing dependencies. 
+Given the time constraints, we do not expect a fully production-ready solution. We're primarily interested in the approach and the overall quality of the solution.
+Feel free to modify the current codebase as needed, including adding or removing dependencies.
 For larger or more time-intensive changes, you're welcome to outline your ideas in the write-up section below and discuss them further during the call.
 
 <img src="./assets/search-example.png" width="400px" />
 
 ### Write-up
 
-<!-- Write-up/conclusion section -->
+- Further Performance Considerations:
 
-_When all the behaviour is implemented, feel free to add some observations or conclusions you like to share in the section_
+1. Current filtering logic is efficient for small datasets but may need optimizations (pagination or lazy loading) for scalability.
+2. Consider implementing unit tests for components and utility functions to ensure reliability and facilitate future changes.
+3. The use of React Router and functional components positions the application well for future updates, especially with the upcoming changes in React Router v7.
 
 ### Database structure
 
